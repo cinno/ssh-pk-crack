@@ -66,6 +66,9 @@ void show_result(EVP_PKEY *pk, char *pw)
 	} else if (pk->type == EVP_PKEY_DSA) {
 		fprintf(fp, "\tKey type: PKEY_DSA\n");
 		DSA_print_fp(fp, EVP_PKEY_get1_DSA(pk), 8);
+	} else if (pk->type == EVP_PKEY_EC) {
+		fprintf(fp, "\tKey type: PKEY_EC\n");
+		EC_KEY_print_fp(fp, EVP_PKEY_get1_EC_KEY(pk), 8);
 	} else {
 		fprintf(fp, "PEM_read_PrivateKey: mismatch or unknown EVP_PKEY save_type %d", pk->save_type);
 	}
