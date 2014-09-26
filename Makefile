@@ -1,4 +1,3 @@
-CC=gcc
 CFLAGS=-lssl -lcrypto -Wall -O3
 
 all:
