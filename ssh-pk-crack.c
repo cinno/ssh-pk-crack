@@ -21,27 +21,6 @@ void sig_handler(int sig)
 		exit(0);
 }
 
-int get_nr_cpus(void)
-{
-	int nr_cpus = 0;
-	FILE *fp;
-	char line[256];
-
-	fp = fopen("/proc/cpuinfo", "r");
-	if (!fp) {
-		perror("fopen");
-		return -1;
-	}
-
-	while (fgets(line, sizeof(line), fp))
-		if (!strncmp(line, "processor", 9))
-			nr_cpus++;
-
-	fclose(fp);
-
-	return nr_cpus;
-}
-
 void show_result(EVP_PKEY *pk, char *pw)
 {
 	FILE *fp;
@@ -210,7 +189,7 @@ int main(int argc, char **argv)
 	fclose(fp_key);
 
 	if (!nr_cpus) {
-		nr_cpus = get_nr_cpus();
+		nr_cpus = sysconf(_SC_NPROCESSORS_ONLN);
 		if (nr_cpus < 0) {
 			fprintf(stderr, "[-] Can't get the number of cpus, specify it manually\n");
 			usage(argc, argv);
