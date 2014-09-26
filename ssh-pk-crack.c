@@ -9,7 +9,7 @@
 #include <openssl/pem.h>
 #include <openssl/ssl.h>
 
-#define MAX_PWD_LEN 16
+#define MAX_PWD_LEN 32
 
 static int nr_cpus = 0;
 static char *pk_path = NULL;
@@ -103,7 +103,7 @@ void crack_ssh_key(const char *path, int rfd)
 		exit(1);
 
 	while (fgets(pw, sizeof(pw), fp_rfd)) {
-		for (i = 0; i < (sizeof(pw) - 1) && pw[i] != '\n' && pw[i] != '\r'; i++);
+		for (i = 0; i < ((int)sizeof(pw) - 1) && pw[i] != '\n' && pw[i] != '\r'; i++);
 		pw[i] = 0;
 
 		pk = PEM_read_PrivateKey(fp_key, NULL, NULL, pw);
